@@ -1,5 +1,11 @@
 Bootstrap: docker
 From: alpine:3.15.4
 
+%environment
+	export SSH_TUNNELS_DIR=/var/run/ssh_tunnels
+
+%apprun sshtunnel
+	mkdir -p $SSH_TUNNELS_DIR
+
 %post
 	apk add --no-cache openssh
