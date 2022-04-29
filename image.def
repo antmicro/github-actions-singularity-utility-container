@@ -5,7 +5,20 @@ From: alpine:3.15.4
 	export SSH_TUNNELS_DIR=/var/run/ssh_tunnels
 
 %apprun sshtunnel
-	mkdir -p $SSH_TUNNELS_DIR
+	TUNNEL_DIR="$SSH_TUNNELS_DIR/$1"
+	mkdir -p $TUNNEL_DIR
+
+	CONFIG_FILE="$TUNNEL_DIR/ssh_config"
+	echo $2 | base64 -d > $CONFIG_FILE
+
+	PRIVKEY_FILE="$TUNNEL_DIR/id_rsa"
+	echo $3 | base64 -d > $PRIVKEY_FILE
+	chmod 600 $PRIVKEY_FILE
+
+	HOSTNAME=$(awk '/Host[[:blank:]][A-Za-z0-9\-_]+/ { print $2 }' $CONFIG_FILE)
+	echo "Connecting to $HOSTNAME"
+
+	ssh -F $CONFIG_FILE -i $PRIVKEY_FILE -f -N $HOSTNAME	
 
 %post
 	apk add --no-cache openssh
