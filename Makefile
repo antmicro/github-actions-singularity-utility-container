@@ -10,10 +10,10 @@ clean:
 
 run-instance:
 	sudo singularity instance start \
-		-C -e $(IMAGE_NAME) $(INSTANCE_NAME)
+		-C -e --writable-tmpfs $(IMAGE_NAME) $(INSTANCE_NAME)
 
 stop-instance:
 	sudo singularity instance stop $(INSTANCE_NAME)
 
 %.sif: %.def
-	sudo singularity build $@ $<
+	sudo singularity build -F $@ $<
