@@ -16,6 +16,12 @@ From: alpine:3.15.4
 	chmod 600 $PRIVKEY_FILE
 
 	HOSTNAME=$(awk '/Host[[:blank:]][A-Za-z0-9\-_]+/ { print $2 }' $CONFIG_FILE)
+
+	if [ -z "$HOSTNAME" ]; then
+		echo "No host declaration in SSH configuration file!"
+		exit 1
+	fi
+
 	echo "Connecting to $HOSTNAME"
 
 	ssh -F $CONFIG_FILE -i $PRIVKEY_FILE -f -N $HOSTNAME	
