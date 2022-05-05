@@ -15,7 +15,7 @@ From: alpine:3.15.4
 	echo $3 | base64 -d > $PRIVKEY_FILE
 	chmod 600 $PRIVKEY_FILE
 
-	HOSTNAME=$(awk '/Host[[:blank:]][A-Za-z0-9\-_]+/ { print $2 }' $CONFIG_FILE)
+	HOSTNAME=$(awk '/Host[[:blank:]][A-Za-z0-9\-_]+/ { print $2; exit 0 }' $CONFIG_FILE)
 
 	if [ -z "$HOSTNAME" ]; then
 		echo "No host declaration in SSH configuration file!"
