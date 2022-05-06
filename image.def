@@ -22,6 +22,8 @@ From: alpine:3.15.4
 		exit 1
 	fi
 
+	RESOLVED_HOSTNAME=$(ssh -F $CONFIG_FILE -G $HOSTNAME | awk '/^hostname / { print $2 }')
+
 	echo "Connecting to $HOSTNAME"
 
 	ssh -F $CONFIG_FILE -i $PRIVKEY_FILE -f -N \
@@ -29,7 +31,7 @@ From: alpine:3.15.4
 		-o "ConnectTimeout=15" \
 		-o "IdentitiesOnly=yes" \
 		-o "PasswordAuthentication=no" \
-		$HOSTNAME	
+		$HOSTNAME 2>&1 | sed -e "s:$RESOLVED_HOSTNAME:$HOSTNAME:g"
 
 %post
 	apk add --no-cache openssh
