@@ -26,6 +26,13 @@ From: alpine:3.15.4
 
 	echo "Connecting to $HOSTNAME"
 
+	# Create an SSH tunnel with the following parameters:
+	# 
+	# -f -- send the ssh process to the background
+	# -N -- do not execute any remote commands (just forward ports)
+	# -T -- do not allocate pseudoterminal (not needed if no commands are executed)
+	#
+	# Additionally ensure that only public key authentication is possible and hostname is not leaked.
 	ssh -F $CONFIG_FILE -i $PRIVKEY_FILE -f -N \
 		-o "LogLevel=ERROR" \
 		-o "ConnectTimeout=15" \
