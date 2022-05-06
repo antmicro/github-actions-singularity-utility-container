@@ -24,7 +24,12 @@ From: alpine:3.15.4
 
 	echo "Connecting to $HOSTNAME"
 
-	ssh -F $CONFIG_FILE -i $PRIVKEY_FILE -f -N $HOSTNAME	
+	ssh -F $CONFIG_FILE -i $PRIVKEY_FILE -f -N \
+		-o "LogLevel=ERROR" \
+		-o "ConnectTimeout=15" \
+		-o "IdentitiesOnly=yes" \
+		-o "PasswordAuthentication=no" \
+		$HOSTNAME	
 
 %post
 	apk add --no-cache openssh
