@@ -33,7 +33,7 @@ From: alpine:3.15.4
 	# -T -- do not allocate pseudoterminal (not needed if no commands are executed)
 	#
 	# Additionally ensure that only public key authentication is possible and hostname is not leaked.
-	ssh -F $CONFIG_FILE -i $PRIVKEY_FILE -f -N \
+	ssh -F $CONFIG_FILE -i $PRIVKEY_FILE -f -N -T \
 		-o "LogLevel=ERROR" \
 		-o "ConnectTimeout=15" \
 		-o "IdentitiesOnly=yes" \
